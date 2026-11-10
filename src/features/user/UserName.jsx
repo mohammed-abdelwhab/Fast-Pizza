@@ -1,7 +1,7 @@
 function UserName() {
   return (
-    <div className="font-display text-sm font-bold tracking-tighter md:text-lg">
-      Welcome %Moksha% 🍕
+    <div className="min-w-0 flex-1 truncate text-center font-display text-xs font-bold tracking-tighter sm:text-sm md:text-lg">
+      %Moksha%
     </div>
   );
 }

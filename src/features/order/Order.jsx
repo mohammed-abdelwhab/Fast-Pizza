@@ -31,7 +31,7 @@ function Order() {
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-10">
+    <div className="mx-auto max-w-2xl px-6 py-2 sm:py-10">
       <LinkBtn to={"menu"}>&larr; Back to menu</LinkBtn>
 
       <div className="mt-8">
@@ -54,7 +54,7 @@ function Order() {
             ? `Only ${deliveryIn} minutes left 😃`
             : "Order should have arrived"}
         </p>
-        <p className="mt-1 text-sm text-stone-500">
+        <p className="mt-1 text-xs text-stone-500 sm:text-sm">
           Estimated delivery: {formatDate(estimatedDelivery)}
         </p>
       </div>

@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
 import LinkBtn from "../../ui/LinkBtn";
 import CartItem from "./CartItem";
+import { formatCurrency } from "../../utils/helpers";
 
 const fakeCart = [
   {
@@ -44,18 +44,20 @@ function Cart() {
         ))}
       </div>
 
-      <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-stone-200 pt-6">
+      {/** Checkout Section */}
+
+      <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-stone-400 pt-6">
         <div>
           <p className="text-sm text-stone-500">Total</p>
           <p className="font-display text-2xl font-bold text-stone-900">
-            ${total.toFixed(2)}
+            {formatCurrency(total)}
           </p>
         </div>
         <div className="flex gap-3">
-          <button className="rounded-full border border-red-300 bg-red-500 px-6 py-2.5 text-sm font-bold text-stone-700 hover:bg-red-600">
+          <button className="rounded-full border border-red-300 bg-red-500 px-6 py-2.5 font-body text-sm font-extrabold text-stone-300 hover:bg-red-600">
             Clear cart
           </button>
-          <button className="rounded-full border border-stone-300 px-6 py-2.5 text-sm font-bold text-stone-700 hover:bg-basil-500">
+          <button className="rounded-full border border-green-500 bg-basil-500 px-6 py-2.5 font-body text-sm font-extrabold text-stone-300 hover:bg-green-700">
             Confirm
           </button>
         </div>

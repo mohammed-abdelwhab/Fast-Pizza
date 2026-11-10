@@ -70,12 +70,12 @@ function CreateOrder() {
   const formErrors = useActionData();
   // console.log(formErrors);
   return (
-    <div className="mx-auto max-w-xl px-6 py-10">
-      <h2 className="font-display text-4xl font-bold text-stone-900">
-        Ready to order? Let's go!
+    <div className="mx-auto max-w-xl px-6 py-2 sm:py-10">
+      <h2 className="font-display text-3xl font-bold text-stone-900">
+        Ready to order? <br></br>Let's go!
       </h2>
       {/** Using Form Component to submit the data */}
-      <Form method="POST" className="mt-8 space-y-6">
+      <Form method="POST" className="mt-5 space-y-6">
         <div>
           <label
             htmlFor="customer"
