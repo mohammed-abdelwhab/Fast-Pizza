@@ -12,12 +12,11 @@ function AppLayout() {
 
   if (appState === "loading") return <Loader />;
   return (
-    // <div className="grid h-screen grid-rows-[auto_1fr_auto] bg-gradient-to-br from-cream-50 via-mustard-50 to-mustard-200">
     <div className="grid h-dvh grid-rows-[auto_1fr_auto] overflow-x-hidden bg-gradient-to-b from-cream-50 via-mustard-100 to-mustard-300">
       <Header />
-      {/* <div className="overflow-y-auto"> */}
-      <div className="overflow-y-auto px-6 py-2 md:flex md:items-center md:justify-center md:py-4">
-        <main className="mx-auto w-full max-w-7xl">
+
+      <div className="overflow-y-auto px-6 py-2 md:flex md:py-4">
+        <main className="mx-auto my-auto w-full max-w-7xl">
           {/** The outlet component acts like the children prop -->
            *      decides which component will be rendered in the nested child route
            */}
