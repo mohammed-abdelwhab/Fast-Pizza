@@ -1,5 +1,6 @@
 import { Form, redirect, useActionData, useNavigation } from "react-router-dom";
 import { createOrder } from "../../services/apiRestaurant";
+import { useSelector } from "react-redux";
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -50,7 +51,7 @@ export async function action({ request }) {
   const errors = {};
   if (!isValidPhone(order.phone)) {
     errors.phoneErr =
-      "Please enter a valid phone number that will be used in order deleviry🙏⚠️";
+      "Please enter a valid phone number that will be used in order deleviry";
   }
   if (Object.keys(errors).length > 0) return errors;
 
@@ -63,6 +64,7 @@ export async function action({ request }) {
 
 function CreateOrder() {
   // const [withPriority, setWithPriority] = useState(false);
+  const user = useSelector((state) => state.user.userName);
   const cart = fakeCart;
   const formState = useNavigation();
   const isSubmitting = formState.state === "submitting";
@@ -81,13 +83,14 @@ function CreateOrder() {
             htmlFor="customer"
             className="mb-1 block text-sm font-medium text-stone-600"
           >
-            First Name
+            Full Name
           </label>
           <input
             className="w-full rounded-full border-2 border-stone-300 bg-white px-4 py-2.5 text-sm text-stone-900 transition-all duration-300 placeholder:text-stone-400 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-40"
             type="text"
             name="customer"
             id="customer"
+            defaultValue={user}
             required
           />
         </div>

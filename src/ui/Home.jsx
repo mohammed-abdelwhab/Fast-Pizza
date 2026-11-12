@@ -1,7 +1,10 @@
 import CreateUser from "../features/user/CreateUser";
 import pizzaHero from "../assets/pizza.png";
+import { useSelector } from "react-redux";
+import LinkBtn from "./LinkBtn";
 
 function Home() {
+  const user = useSelector((state) => state.user.userName);
   return (
     <div className="mt-5 grid grid-cols-[1fr_auto] items-center gap-x-4 md:mt-0 md:grid-cols-2 md:gap-x-10 lg:gap-x-16">
       {/* 1. Eyebrow + heading */}
@@ -37,7 +40,11 @@ function Home() {
         </p>
 
         <div className="mt-6 md:mt-5">
-          <CreateUser />
+          {user ? (
+            <LinkBtn to={"menu"}>Back to menu &rarr;</LinkBtn>
+          ) : (
+            <CreateUser />
+          )}
         </div>
       </div>
     </div>

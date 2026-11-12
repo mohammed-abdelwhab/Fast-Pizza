@@ -1,6 +1,7 @@
 import LinkBtn from "../../ui/LinkBtn";
 import CartItem from "./CartItem";
 import { formatCurrency } from "../../utils/helpers";
+import { useNavigate } from "react-router-dom";
 
 const fakeCart = [
   {
@@ -27,6 +28,7 @@ const fakeCart = [
 ];
 
 function Cart() {
+  const navigate = useNavigate();
   const cart = fakeCart;
   const total = cart.reduce((sum, item) => sum + item.totalPrice, 0);
 
@@ -57,7 +59,10 @@ function Cart() {
           <button className="rounded-full border border-red-300 bg-red-500 px-6 py-2.5 font-body text-sm font-extrabold text-stone-300 hover:bg-red-600">
             Clear cart
           </button>
-          <button className="rounded-full border border-green-500 bg-basil-500 px-6 py-2.5 font-body text-sm font-extrabold text-stone-300 hover:bg-green-700">
+          <button
+            className="rounded-full border border-green-500 bg-basil-500 px-6 py-2.5 font-body text-sm font-extrabold text-stone-300 hover:bg-green-700"
+            onClick={() => navigate("/order/new")}
+          >
             Confirm
           </button>
         </div>
