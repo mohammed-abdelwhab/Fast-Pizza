@@ -1,14 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const fakeCart = [
-  {
-    pizzaId: 12,
-    name: "Mediterranean",
-    quantity: 2,
-    unitPrice: 16,
-    totalPrice: 32,
-  },
-];
+// const fakeCart = [
+//   {
+//     id: 12,
+//     name: "Mediterranean",
+//     quantity: 2,
+//     unitPrice: 16,
+//   },
+// ];
 
 const initialState = {
   cart: [],
@@ -18,11 +17,53 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addItem(state, action) {},
-    removeItem(state, action) {},
-    deleteCart(state, action) {},
-    incrementQuantity(state, action) {},
-    decrementQuantity(state, action) {},
+    addItem(state, action) {
+      //! validating adding the same item more than once:
+      // true, false value
+      const isAdded = state.cart.some((curr) => curr.id === action.payload.id);
+      if (isAdded) return;
+      // payload = item object
+      state.cart.push(action.payload);
+    },
+
+    removeItem(state, action) {
+      // payload = item id
+      state.cart.filter((curr) => curr.id !== action.payload);
+    },
+    deleteCart(state) {
+      state.cart = [];
+    },
+
+    //** --- preparing the payload data first --> payload = {required item id, new quantity} ---- */
+    incrementQuantity: {
+      prepare(quantity, id) {
+        return {
+          payload: { quantity, id },
+        };
+      },
+      reducer(state, action) {
+        state.cart.map((curr) =>
+          curr.id === action.payload.id
+            ? { ...curr, quantity: action.payload.quantity }
+            : curr,
+        );
+      },
+    },
+    decrementQuantity: {
+      prepare(quantity, id) {
+        return {
+          payload: { quantity, id },
+        };
+      },
+      reducer(state, action) {
+        if (action.payload.quantity <= 0) return;
+        state.cart.map((curr) =>
+          curr.id === action.payload.id
+            ? { ...curr, quantity: action.payload.quantity }
+            : curr,
+        );
+      },
+    },
   },
 });
 

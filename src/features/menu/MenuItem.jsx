@@ -1,9 +1,15 @@
+import { useDispatch } from "react-redux";
 import LazyImage from "../../ui/LazyImage";
 import { formatCurrency } from "../../utils/helpers";
+import { addItem } from "../cart/cartSlice";
 
 function MenuItem({ pizza }) {
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;
+  const dispatch = useDispatch();
 
+  function handleAddToCart() {
+    dispatch(addItem({ id, name, unitPrice, quantity: 1 }));
+  }
   return (
     <li className="group flex flex-col overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm transition-shadow hover:shadow-md">
       <div className="relative aspect-square overflow-hidden bg-stone-100">
@@ -39,6 +45,7 @@ function MenuItem({ pizza }) {
                 ? "cursor-not-allowed border-stone-300 text-stone-400"
                 : "border-basil-500 text-basil-500 hover:bg-basil-500 hover:text-white"
             }`}
+            onClick={handleAddToCart}
           >
             Add to cart
           </button>
