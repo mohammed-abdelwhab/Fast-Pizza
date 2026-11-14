@@ -1,10 +1,19 @@
+import { useState } from "react";
 import { formatCurrency } from "../../utils/helpers";
 
 function CartItem({ item }) {
   const { pizzaId, name, quantity, unitPrice, totalPrice } = item;
+  const [counter, setCounter] = useState(1);
+  function increment() {
+    setCounter((curr) => curr + 1);
+  }
+  function decrement() {
+    if (counter <= 1) return;
+    setCounter((curr) => curr - 1);
+  }
 
   return (
-    <li className="flex flex-wrap items-center gap-3 rounded-xl border border-stone-200 bg-white p-3 shadow-sm sm:flex-nowrap sm:gap-4 sm:p-4">
+    <li className="relative flex flex-wrap items-center gap-3 rounded-xl border border-stone-200 bg-white p-3 shadow-sm sm:flex-nowrap sm:gap-4 sm:p-4">
       <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-mustard-100 text-2xl">
         🍕
       </div>
@@ -16,15 +25,16 @@ function CartItem({ item }) {
           {quantity}&times; {formatCurrency(unitPrice)}
         </p>
       </div>
-      {/* Quantity section */}
+      {/* -------- Right section --------- */}
       <div className="flex w-full items-center justify-between sm:w-auto sm:gap-4">
         <div className="flex items-center gap-2">
           {/** Decrement Button */}
           <button
             type="button"
-            disabled={quantity <= 1}
+            disabled={counter <= 1}
             aria-label="Decrease quantity"
             className="flex h-8 w-8 items-center justify-center rounded-full border border-stone-300 text-stone-600 transition hover:border-basil-500 hover:bg-basil-500 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil-500/50 active:scale-90 disabled:cursor-not-allowed disabled:opacity-30"
+            onClick={decrement}
           >
             <svg
               viewBox="0 0 24 24"
@@ -38,14 +48,18 @@ function CartItem({ item }) {
               <path d="M5 12h14" />
             </svg>
           </button>
+
+          {/** --------- Quantity --------- */}
+
           <span className="w-6 text-center text-sm font-bold text-stone-900">
-            {quantity}
+            {counter}
           </span>
-          {/** Increment Button */}
+          {/** --------- Increment Button --------- */}
           <button
             type="button"
             aria-label="Increase quantity"
             className="flex h-8 w-8 items-center justify-center rounded-full border border-stone-300 text-stone-600 transition hover:border-basil-500 hover:bg-basil-500 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil-500/50 active:scale-90"
+            onClick={increment}
           >
             <svg
               viewBox="0 0 24 24"
@@ -61,10 +75,35 @@ function CartItem({ item }) {
           </button>
         </div>
         {/** Total price  */}
-        <p className="font-body font-bold text-red-600">
+        <p className="font-body text-xl font-bold text-red-600">
           {formatCurrency(totalPrice)}
         </p>
       </div>
+      {/** --- The Delete button --- */}
+      <button
+        type="button"
+        aria-label="Delete quantity"
+        className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full border border-white bg-white text-stone-600 transition hover:border-red-400 hover:bg-red-500 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 active:scale-90 disabled:cursor-not-allowed disabled:opacity-30 sm:static sm:right-auto sm:top-auto"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M3 6h18" />
+          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+          <line x1="10" y1="11" x2="10" y2="17" />
+          <line x1="14" y1="11" x2="14" y2="17" />
+        </svg>
+      </button>
     </li>
   );
 }

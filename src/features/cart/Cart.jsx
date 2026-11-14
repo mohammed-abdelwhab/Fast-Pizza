@@ -32,6 +32,11 @@ function Cart() {
   const cart = fakeCart;
   const total = cart.reduce((sum, item) => sum + item.totalPrice, 0);
 
+  function handleConfirm() {
+    navigate("/order/new");
+  }
+  function handleClear() {}
+
   return (
     <div className="mx-auto max-w-2xl px-6 py-3">
       <LinkBtn to={"menu"}>&larr; Back to menu</LinkBtn>
@@ -40,14 +45,14 @@ function Cart() {
         Your cart
       </h2>
 
+      {/** ----- Cart Item Component ----- */}
       <div className="mt-6 space-y-4">
         {cart.map((item) => (
           <CartItem key={item.pizzaId} item={item} />
         ))}
       </div>
 
-      {/** Checkout Section */}
-
+      {/** ----- Checkout Section ----- */}
       <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-stone-400 pt-6">
         <div>
           <p className="text-sm text-stone-500">Total</p>
@@ -61,7 +66,7 @@ function Cart() {
           </button>
           <button
             className="rounded-full border border-green-500 bg-basil-500 px-6 py-2.5 font-body text-sm font-extrabold text-stone-300 hover:bg-green-700"
-            onClick={() => navigate("/order/new")}
+            onClick={handleConfirm}
           >
             Confirm
           </button>
