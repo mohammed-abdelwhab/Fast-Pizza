@@ -22,7 +22,7 @@ const cartSlice = createSlice({
       // true, false value
       const isAdded = state.cart.some((curr) => curr.id === action.payload.id);
       if (isAdded) return;
-      // payload = item object
+      // payload = item object --> {id, name, unitPrice, quanitity:1 (default value till editing later) }
       state.cart.push(action.payload);
     },
 

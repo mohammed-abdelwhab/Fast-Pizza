@@ -2,7 +2,7 @@ import { useState } from "react";
 import { formatCurrency } from "../../utils/helpers";
 
 function CartItem({ item }) {
-  const { pizzaId, name, quantity, unitPrice, totalPrice } = item;
+  const { id, name, quantity, unitPrice, totalPrice } = item;
   const [counter, setCounter] = useState(1);
   function increment() {
     setCounter((curr) => curr + 1);

@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LazyImage from "../../ui/LazyImage";
 import { formatCurrency } from "../../utils/helpers";
 import { addItem } from "../cart/cartSlice";
@@ -7,6 +7,9 @@ function MenuItem({ pizza }) {
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;
   const dispatch = useDispatch();
 
+  const isInCart = useSelector((state) =>
+    state.cart.cart.some((item) => item.id === id),
+  );
   function handleAddToCart() {
     dispatch(addItem({ id, name, unitPrice, quantity: 1 }));
   }
@@ -39,15 +42,15 @@ function MenuItem({ pizza }) {
           </span>
 
           <button
-            disabled={soldOut}
+            disabled={soldOut || isInCart}
             className={`w-full whitespace-nowrap rounded-full border-2 px-3 py-1.5 font-display text-sm font-bold transition sm:w-auto md:px-5 md:py-2 ${
-              soldOut
+              soldOut || isInCart
                 ? "cursor-not-allowed border-stone-300 text-stone-400"
                 : "border-basil-500 text-basil-500 hover:bg-basil-500 hover:text-white"
             }`}
             onClick={handleAddToCart}
           >
-            Add to cart
+            {isInCart ? "Added to cart" : "Add to cart"}
           </button>
         </div>
       </div>
