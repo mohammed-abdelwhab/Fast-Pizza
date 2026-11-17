@@ -1,9 +1,18 @@
+import { useDispatch, useSelector } from "react-redux";
 import LazyImage from "../../ui/LazyImage";
 import { formatCurrency } from "../../utils/helpers";
+import { addItem } from "../cart/cartSlice";
 
 function MenuItem({ pizza }) {
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;
+  const dispatch = useDispatch();
 
+  const isInCart = useSelector((state) =>
+    state.cart.cart.some((item) => item.id === id),
+  );
+  function handleAddToCart() {
+    dispatch(addItem({ id, name, unitPrice, quantity: 1 }));
+  }
   return (
     <li className="group flex flex-col overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm transition-shadow hover:shadow-md">
       <div className="relative aspect-square overflow-hidden bg-stone-100">
@@ -20,10 +29,10 @@ function MenuItem({ pizza }) {
       </div>
 
       <div className="flex flex-1 flex-col p-3 sm:p-4">
-        <h3 className="font-display text-base font-bold leading-tight text-stone-900 sm:text-lg">
+        <h3 className="font-ingredients text-lg font-extrabold leading-tight text-stone-900 sm:text-2xl">
           {name}
         </h3>
-        <p className="mt-1 font-body text-xs text-stone-500 sm:text-sm">
+        <p className="mt-1 font-ingredients text-sm italic text-stone-500 sm:text-sm">
           {ingredients.join(", ")}
         </p>
 
@@ -33,14 +42,15 @@ function MenuItem({ pizza }) {
           </span>
 
           <button
-            disabled={soldOut}
+            disabled={soldOut || isInCart}
             className={`w-full whitespace-nowrap rounded-full border-2 px-3 py-1.5 font-display text-sm font-bold transition sm:w-auto md:px-5 md:py-2 ${
-              soldOut
+              soldOut || isInCart
                 ? "cursor-not-allowed border-stone-300 text-stone-400"
                 : "border-basil-500 text-basil-500 hover:bg-basil-500 hover:text-white"
             }`}
+            onClick={handleAddToCart}
           >
-            Add to cart
+            {isInCart ? "Added" : "Add to cart"}
           </button>
         </div>
       </div>

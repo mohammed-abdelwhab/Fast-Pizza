@@ -2,35 +2,30 @@ import LinkBtn from "../../ui/LinkBtn";
 import CartItem from "./CartItem";
 import { formatCurrency } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
-
-const fakeCart = [
-  {
-    pizzaId: 12,
-    name: "Mediterranean",
-    quantity: 2,
-    unitPrice: 16,
-    totalPrice: 32,
-  },
-  {
-    pizzaId: 6,
-    name: "Vegetale",
-    quantity: 1,
-    unitPrice: 13,
-    totalPrice: 13,
-  },
-  {
-    pizzaId: 11,
-    name: "Spinach and Mushroom",
-    quantity: 1,
-    unitPrice: 15,
-    totalPrice: 15,
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { deleteCart } from "./cartSlice";
+import ConfirmModal from "../../ui/confirmModal";
+import { useState } from "react";
+import EmptyCart from "./EmptyCart";
 
 function Cart() {
   const navigate = useNavigate();
-  const cart = fakeCart;
-  const total = cart.reduce((sum, item) => sum + item.totalPrice, 0);
+  const dispatch = useDispatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const cart = useSelector((state) => state.cart.cart);
+  const total = cart.reduce(
+    (acc, curr) => acc + curr.unitPrice * curr.quantity,
+    0,
+  );
+
+  function handleConfirm() {
+    navigate("/order/new");
+  }
+  function handleClear() {
+    dispatch(deleteCart());
+  }
+
+  if (cart.length === 0) return <EmptyCart />;
 
   return (
     <div className="mx-auto max-w-2xl px-6 py-3">
@@ -40,14 +35,14 @@ function Cart() {
         Your cart
       </h2>
 
+      {/** ----- Cart Item Component ----- */}
       <div className="mt-6 space-y-4">
         {cart.map((item) => (
-          <CartItem key={item.pizzaId} item={item} />
+          <CartItem key={item.id} item={item} />
         ))}
       </div>
 
-      {/** Checkout Section */}
-
+      {/** ----- Checkout Section ----- */}
       <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-stone-400 pt-6">
         <div>
           <p className="text-sm text-stone-500">Total</p>
@@ -56,17 +51,29 @@ function Cart() {
           </p>
         </div>
         <div className="flex gap-3">
-          <button className="rounded-full border border-red-300 bg-red-500 px-6 py-2.5 font-body text-sm font-extrabold text-stone-300 hover:bg-red-600">
+          <button
+            className="rounded-full border border-red-300 bg-red-500 px-6 py-2.5 font-body text-sm font-extrabold text-stone-300 hover:bg-red-600"
+            onClick={() => setIsModalOpen(true)}
+          >
             Clear cart
           </button>
           <button
             className="rounded-full border border-green-500 bg-basil-500 px-6 py-2.5 font-body text-sm font-extrabold text-stone-300 hover:bg-green-700"
-            onClick={() => navigate("/order/new")}
+            onClick={handleConfirm}
           >
             Confirm
           </button>
         </div>
       </div>
+      {/** ------ Confirmation Modal ------------ */}
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleClear}
+        title="Clear Cart"
+        message="Are you sure you want to delete the cart?"
+        isDestructive={true}
+      />
     </div>
   );
 }
