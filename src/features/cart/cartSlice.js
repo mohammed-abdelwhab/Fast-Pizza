@@ -1,13 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// const fakeCart = [
-//   {
-//     id: 12,
-//     name: "Mediterranean",
-//     quantity: 2,
-//     unitPrice: 16,
-//   },
-// ];
+/**
+ * --- Object's structure in the cart :
+ *    {
+ *      id: 12,
+ *      name: "Romana",
+ *      quantity: 1,
+ *      unitPrice: 25
+ * }
+ */
 
 const initialState = {
   cart: [],
@@ -19,59 +20,41 @@ const cartSlice = createSlice({
   reducers: {
     addItem(state, action) {
       //! validating adding the same item more than once:
-      // true, false value
+      // True-False value
       const isAdded = state.cart.some((curr) => curr.id === action.payload.id);
       if (isAdded) return;
-      // payload = item object --> {id, name, unitPrice, quanitity:1 (default value till editing later) }
+      // payload passed later = item object --> {id, name, unitPrice, quanitity:1 (default value till editing later) }
       state.cart.push(action.payload);
     },
 
     removeItem(state, action) {
       // payload = item id
-      state.cart.filter((curr) => curr.id !== action.payload);
+      state.cart = state.cart.filter((curr) => curr.id !== action.payload);
     },
     deleteCart(state) {
       state.cart = [];
     },
 
-    //** --- preparing the payload data first --> payload = {required item id, new quantity} ---- */
-    incrementQuantity: {
-      prepare(quantity, id) {
-        return {
-          payload: { quantity, id },
-        };
-      },
-      reducer(state, action) {
-        state.cart.map((curr) =>
-          curr.id === action.payload.id
-            ? { ...curr, quantity: action.payload.quantity }
-            : curr,
-        );
-      },
+    incQuantity(state, action) {
+      // payload = item id
+      state.cart = state.cart.map((item) =>
+        item.id === action.payload
+          ? { ...item, quantity: item.quantity + 1 }
+          : item,
+      );
     },
-    decrementQuantity: {
-      prepare(quantity, id) {
-        return {
-          payload: { quantity, id },
-        };
-      },
-      reducer(state, action) {
-        if (action.payload.quantity <= 0) return;
-        state.cart.map((curr) =>
-          curr.id === action.payload.id
-            ? { ...curr, quantity: action.payload.quantity }
-            : curr,
-        );
-      },
+    decQuantity(state, action) {
+      // payload = item id
+      if (action.payload < 1) return;
+      state.cart = state.cart.map((item) =>
+        item.id === action.payload
+          ? { ...item, quantity: item.quantity - 1 }
+          : item,
+      );
     },
   },
 });
 
 export default cartSlice.reducer;
-export const {
-  addItem,
-  removeItem,
-  deleteCart,
-  incrementQuantity,
-  decrementQuantity,
-} = cartSlice.actions;
+export const { addItem, removeItem, deleteCart, incQuantity, decQuantity } =
+  cartSlice.actions;

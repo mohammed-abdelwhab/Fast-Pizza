@@ -1,15 +1,21 @@
-import { useState } from "react";
 import { formatCurrency } from "../../utils/helpers";
+import { incQuantity, decQuantity, removeItem } from "./cartSlice";
+import { useDispatch } from "react-redux";
 
 function CartItem({ item }) {
-  const { id, name, quantity, unitPrice, totalPrice } = item;
-  const [counter, setCounter] = useState(1);
+  const { id, name, quantity, unitPrice } = item;
+  const totalItemPrice = quantity * unitPrice;
+  const dispatch = useDispatch();
   function increment() {
-    setCounter((curr) => curr + 1);
+    dispatch(incQuantity(id));
   }
   function decrement() {
-    if (counter <= 1) return;
-    setCounter((curr) => curr - 1);
+    if (quantity <= 1) return;
+    dispatch(decQuantity(id));
+  }
+
+  function handleRemoveItem() {
+    dispatch(removeItem(id));
   }
 
   return (
@@ -31,7 +37,7 @@ function CartItem({ item }) {
           {/** Decrement Button */}
           <button
             type="button"
-            disabled={counter <= 1}
+            disabled={quantity <= 1}
             aria-label="Decrease quantity"
             className="flex h-8 w-8 items-center justify-center rounded-full border border-stone-300 text-stone-600 transition hover:border-basil-500 hover:bg-basil-500 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-basil-500/50 active:scale-90 disabled:cursor-not-allowed disabled:opacity-30"
             onClick={decrement}
@@ -52,7 +58,7 @@ function CartItem({ item }) {
           {/** --------- Quantity --------- */}
 
           <span className="w-6 text-center text-sm font-bold text-stone-900">
-            {counter}
+            {quantity}
           </span>
           {/** --------- Increment Button --------- */}
           <button
@@ -76,7 +82,7 @@ function CartItem({ item }) {
         </div>
         {/** Total price  */}
         <p className="font-body text-xl font-bold text-red-600">
-          {formatCurrency(totalPrice)}
+          {formatCurrency(totalItemPrice)}
         </p>
       </div>
       {/** --- The Delete button --- */}
@@ -84,6 +90,7 @@ function CartItem({ item }) {
         type="button"
         aria-label="Delete quantity"
         className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full border border-white bg-white text-stone-600 transition hover:border-red-400 hover:bg-red-500 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 active:scale-90 disabled:cursor-not-allowed disabled:opacity-30 sm:static sm:right-auto sm:top-auto"
+        onClick={handleRemoveItem}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

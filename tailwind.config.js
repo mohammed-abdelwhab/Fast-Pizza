@@ -7,6 +7,7 @@ export default {
       fontFamily: {
         display: ["Fraunces", "serif"],
         body: ["Manrope", "sans-serif"],
+        ingredients: ["Piazzolla", "sans-serif"],
       },
       colors: {
         cream: { 50: "#F7F3E8", 100: "#F0E9D6" },

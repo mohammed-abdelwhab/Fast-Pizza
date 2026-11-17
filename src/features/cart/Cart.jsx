@@ -2,40 +2,25 @@ import LinkBtn from "../../ui/LinkBtn";
 import CartItem from "./CartItem";
 import { formatCurrency } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
-
-const fakeCart = [
-  {
-    pizzaId: 12,
-    name: "Mediterranean",
-    quantity: 2,
-    unitPrice: 16,
-    totalPrice: 32,
-  },
-  {
-    pizzaId: 6,
-    name: "Vegetale",
-    quantity: 1,
-    unitPrice: 13,
-    totalPrice: 13,
-  },
-  {
-    pizzaId: 11,
-    name: "Spinach and Mushroom",
-    quantity: 1,
-    unitPrice: 15,
-    totalPrice: 15,
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { deleteCart } from "./cartSlice";
 
 function Cart() {
   const navigate = useNavigate();
-  const cart = fakeCart;
-  const total = cart.reduce((sum, item) => sum + item.totalPrice, 0);
+  const dispatch = useDispatch();
+
+  const cart = useSelector((state) => state.cart.cart);
+  const total = cart.reduce(
+    (acc, curr) => acc + curr.unitPrice * curr.quantity,
+    0,
+  );
 
   function handleConfirm() {
     navigate("/order/new");
   }
-  function handleClear() {}
+  function handleClear() {
+    dispatch(deleteCart());
+  }
 
   return (
     <div className="mx-auto max-w-2xl px-6 py-3">
@@ -48,7 +33,7 @@ function Cart() {
       {/** ----- Cart Item Component ----- */}
       <div className="mt-6 space-y-4">
         {cart.map((item) => (
-          <CartItem key={item.pizzaId} item={item} />
+          <CartItem key={item.id} item={item} />
         ))}
       </div>
 
@@ -61,7 +46,10 @@ function Cart() {
           </p>
         </div>
         <div className="flex gap-3">
-          <button className="rounded-full border border-red-300 bg-red-500 px-6 py-2.5 font-body text-sm font-extrabold text-stone-300 hover:bg-red-600">
+          <button
+            className="rounded-full border border-red-300 bg-red-500 px-6 py-2.5 font-body text-sm font-extrabold text-stone-300 hover:bg-red-600"
+            onClick={handleClear}
+          >
             Clear cart
           </button>
           <button

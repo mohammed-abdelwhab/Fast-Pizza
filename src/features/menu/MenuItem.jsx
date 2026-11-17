@@ -29,10 +29,10 @@ function MenuItem({ pizza }) {
       </div>
 
       <div className="flex flex-1 flex-col p-3 sm:p-4">
-        <h3 className="font-display text-base font-bold leading-tight text-stone-900 sm:text-lg">
+        <h3 className="font-ingredients text-lg font-extrabold leading-tight text-stone-900 sm:text-2xl">
           {name}
         </h3>
-        <p className="mt-1 font-body text-xs text-stone-500 sm:text-sm">
+        <p className="mt-1 font-ingredients text-sm italic text-stone-500 sm:text-sm">
           {ingredients.join(", ")}
         </p>
 
@@ -50,7 +50,7 @@ function MenuItem({ pizza }) {
             }`}
             onClick={handleAddToCart}
           >
-            {isInCart ? "Added to cart" : "Add to cart"}
+            {isInCart ? "Added" : "Add to cart"}
           </button>
         </div>
       </div>
