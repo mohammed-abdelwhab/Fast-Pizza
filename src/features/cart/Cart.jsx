@@ -4,11 +4,14 @@ import { formatCurrency } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCart } from "./cartSlice";
+import ConfirmModal from "../../ui/confirmModal";
+import { useState } from "react";
+import EmptyCart from "./EmptyCart";
 
 function Cart() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const cart = useSelector((state) => state.cart.cart);
   const total = cart.reduce(
     (acc, curr) => acc + curr.unitPrice * curr.quantity,
@@ -21,6 +24,8 @@ function Cart() {
   function handleClear() {
     dispatch(deleteCart());
   }
+
+  if (cart.length === 0) return <EmptyCart />;
 
   return (
     <div className="mx-auto max-w-2xl px-6 py-3">
@@ -48,7 +53,7 @@ function Cart() {
         <div className="flex gap-3">
           <button
             className="rounded-full border border-red-300 bg-red-500 px-6 py-2.5 font-body text-sm font-extrabold text-stone-300 hover:bg-red-600"
-            onClick={handleClear}
+            onClick={() => setIsModalOpen(true)}
           >
             Clear cart
           </button>
@@ -60,6 +65,15 @@ function Cart() {
           </button>
         </div>
       </div>
+      {/** ------ Confirmation Modal ------------ */}
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleClear}
+        title="Clear Cart"
+        message="Are you sure you want to delete the cart?"
+        isDestructive={true}
+      />
     </div>
   );
 }

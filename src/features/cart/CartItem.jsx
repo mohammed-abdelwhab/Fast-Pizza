@@ -1,11 +1,16 @@
+import { useState } from "react";
 import { formatCurrency } from "../../utils/helpers";
 import { incQuantity, decQuantity, removeItem } from "./cartSlice";
 import { useDispatch } from "react-redux";
+import ConfirmModal from "../../ui/confirmModal";
 
 function CartItem({ item }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { id, name, quantity, unitPrice } = item;
   const totalItemPrice = quantity * unitPrice;
   const dispatch = useDispatch();
+
+  /** Handler Functions */
   function increment() {
     dispatch(incQuantity(id));
   }
@@ -90,7 +95,7 @@ function CartItem({ item }) {
         type="button"
         aria-label="Delete quantity"
         className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full border border-white bg-white text-stone-600 transition hover:border-red-400 hover:bg-red-500 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 active:scale-90 disabled:cursor-not-allowed disabled:opacity-30 sm:static sm:right-auto sm:top-auto"
-        onClick={handleRemoveItem}
+        onClick={() => setIsModalOpen(true)}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -111,6 +116,16 @@ function CartItem({ item }) {
           <line x1="14" y1="11" x2="14" y2="17" />
         </svg>
       </button>
+
+      {/** ------- Confirm modal ---------- */}
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleRemoveItem}
+        title="Remove Item from Cart"
+        message="Are you sure you want to remove this pizza?"
+        isDestructive={false}
+      />
     </li>
   );
 }
