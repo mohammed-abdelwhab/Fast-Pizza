@@ -8,6 +8,7 @@ import {
 } from "../../utils/helpers";
 import { getOrder } from "../../services/apiRestaurant";
 import LinkBtn from "../../ui/LinkBtn";
+import OrderItem from "./OrderItem";
 
 // Here the id sent as a param in the input search is received here with the loader function
 export async function loader({ params }) {
@@ -58,6 +59,12 @@ function Order() {
           Estimated delivery: {formatDate(estimatedDelivery)}
         </p>
       </div>
+
+      <ul className="mt-3 space-y-2 rounded-xl border border-stone-200 bg-white p-2 shadow-sm">
+        {cart.map((curr) => (
+          <OrderItem key={curr.pizzaId} item={curr} />
+        ))}
+      </ul>
 
       <div className="mt-6 rounded-xl border border-stone-200 bg-white p-6 shadow-sm">
         <h3 className="font-display text-lg font-bold text-stone-900">

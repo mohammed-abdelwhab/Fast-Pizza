@@ -3,6 +3,7 @@ import { formatCurrency } from "../../utils/helpers";
 import { incQuantity, decQuantity, removeItem } from "./cartSlice";
 import { useDispatch } from "react-redux";
 import ConfirmModal from "../../ui/confirmModal";
+import pizzaHero from "../../assets/pizza.png";
 
 function CartItem({ item }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,9 +25,13 @@ function CartItem({ item }) {
   }
 
   return (
-    <li className="relative flex flex-wrap items-center gap-3 rounded-xl border border-stone-200 bg-white p-3 shadow-sm sm:flex-nowrap sm:gap-4 sm:p-4">
-      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-mustard-100 text-2xl">
-        🍕
+    <li className="relative flex flex-wrap items-center gap-3 rounded-xl border border-stone-200 bg-white to-mustard-700 p-3 shadow-sm sm:flex-nowrap sm:gap-4 sm:p-4">
+      <div className="flex w-14 shrink-0 items-center justify-center sm:w-20">
+        <img
+          src={pizzaHero}
+          alt="happy meal"
+          className="object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.2)]"
+        />
       </div>
       <div className="min-w-0 flex-1">
         <p className="font-display font-bold leading-tight text-stone-900">
@@ -86,7 +91,7 @@ function CartItem({ item }) {
           </button>
         </div>
         {/** Total price  */}
-        <p className="font-body text-xl font-bold text-red-600">
+        <p className="font-display text-sm text-stone-700">
           {formatCurrency(totalItemPrice)}
         </p>
       </div>
