@@ -3,7 +3,8 @@ import { createOrder } from "../../services/apiRestaurant";
 import { useSelector } from "react-redux";
 import LinkBtn from "../../ui/LinkBtn";
 import EmptyCart from "../cart/EmptyCart";
-
+import store from "../../store";
+import { deleteCart } from "../cart/cartSlice";
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
@@ -33,8 +34,14 @@ export async function action({ request }) {
   if (Object.keys(errors).length > 0) return errors;
 
   //? 3- Creating a new order from the resturant's api method if no error happen:
+
   const newOrder = await createOrder(order);
-  //? 4- redirecting to the order details view (we can't use useNavigate hook outside a component so we use redirect() method from react router)
+
+  //? 4- !! clearing the cart , but this technique shouldn't be used frequently as we can't use the useDispatch hook outside of a component !!!!
+
+  store.dispatch(deleteCart());
+
+  //? 5- redirecting to the order details view (we can't use useNavigate hook outside a component so we use redirect() method from react router)
   return redirect(`/order/${newOrder.id}`);
 }
 
