@@ -9,30 +9,6 @@ const isValidPhone = (str) =>
     str,
   );
 
-const fakeCart = [
-  {
-    pizzaId: 12,
-    name: "Mediterranean",
-    quantity: 2,
-    unitPrice: 16,
-    totalPrice: 32,
-  },
-  {
-    pizzaId: 6,
-    name: "Vegetale",
-    quantity: 1,
-    unitPrice: 13,
-    totalPrice: 13,
-  },
-  {
-    pizzaId: 11,
-    name: "Spinach and Mushroom",
-    quantity: 1,
-    unitPrice: 15,
-    totalPrice: 15,
-  },
-];
-
 // TODO: Creating Action function with the Form Component from react router to add data to the server
 
 export async function action({ request }) {
@@ -46,7 +22,6 @@ export async function action({ request }) {
     cart: JSON.parse(data.cart),
     priority: data.priority === "on",
   };
-  // console.log(order);
 
   //? 2- Adding some form validation "on phone number" before creating a new order (early return):
   const errors = {};
@@ -58,7 +33,6 @@ export async function action({ request }) {
 
   //? 3- Creating a new order from the resturant's api method if no error happen:
   const newOrder = await createOrder(order);
-  // console.log(newOrder);
   //? 4- redirecting to the order details view (we can't use useNavigate hook outside a component so we use redirect() method from react router)
   return redirect(`/order/${newOrder.id}`);
 }
@@ -66,12 +40,16 @@ export async function action({ request }) {
 function CreateOrder() {
   // const [withPriority, setWithPriority] = useState(false);
   const user = useSelector((state) => state.user.userName);
-  const cart = fakeCart;
+  const cartState = useSelector((state) => state.cart.cart);
+  //** ------ Adding a new key to the cart object so the order api method can work --> totalPrice -----*/
+  const cart = cartState.map((item) => ({
+    ...item,
+    totalPrice: item.quantity * item.unitPrice,
+  }));
   const formState = useNavigation();
   const isSubmitting = formState.state === "submitting";
   //! Consuming the errors object returned from the action function
   const formErrors = useActionData();
-  // console.log(formErrors);
   return (
     <div className="mx-auto max-w-xl px-6 py-2 sm:py-10">
       <h2 className="font-display text-3xl font-bold text-stone-900">

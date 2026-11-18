@@ -6,21 +6,21 @@ import ConfirmModal from "../../ui/confirmModal";
 
 function CartItem({ item }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { id, name, quantity, unitPrice } = item;
+  const { pizzaId, name, quantity, unitPrice } = item;
   const totalItemPrice = quantity * unitPrice;
   const dispatch = useDispatch();
 
   /** Handler Functions */
   function increment() {
-    dispatch(incQuantity(id));
+    dispatch(incQuantity(pizzaId));
   }
   function decrement() {
     if (quantity <= 1) return;
-    dispatch(decQuantity(id));
+    dispatch(decQuantity(pizzaId));
   }
 
   function handleRemoveItem() {
-    dispatch(removeItem(id));
+    dispatch(removeItem(pizzaId));
   }
 
   return (

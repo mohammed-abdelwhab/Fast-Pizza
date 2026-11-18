@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 /**
  * --- Object's structure in the cart :
  *    {
- *      id: 12,
+ *      pizzaId: 12,
  *      name: "Romana",
  *      quantity: 1,
  *      unitPrice: 25
@@ -21,15 +21,17 @@ const cartSlice = createSlice({
     addItem(state, action) {
       //! validating adding the same item more than once:
       // True-False value
-      const isAdded = state.cart.some((curr) => curr.id === action.payload.id);
+      const isAdded = state.cart.some(
+        (curr) => curr.pizzaId === action.payload.id,
+      );
       if (isAdded) return;
-      // payload passed later = item object --> {id, name, unitPrice, quanitity:1 (default value till editing later) }
+      // payload passed later = item object --> {pizzaId, name, unitPrice, quanitity:1 (default value till editing later) }
       state.cart.push(action.payload);
     },
 
     removeItem(state, action) {
       // payload = item id
-      state.cart = state.cart.filter((curr) => curr.id !== action.payload);
+      state.cart = state.cart.filter((curr) => curr.pizzaId !== action.payload);
     },
     deleteCart(state) {
       state.cart = [];
@@ -38,7 +40,7 @@ const cartSlice = createSlice({
     incQuantity(state, action) {
       // payload = item id
       state.cart = state.cart.map((item) =>
-        item.id === action.payload
+        item.pizzaId === action.payload
           ? { ...item, quantity: item.quantity + 1 }
           : item,
       );
@@ -47,7 +49,7 @@ const cartSlice = createSlice({
       // payload = item id
       if (action.payload < 1) return;
       state.cart = state.cart.map((item) =>
-        item.id === action.payload
+        item.pizzaId === action.payload
           ? { ...item, quantity: item.quantity - 1 }
           : item,
       );
