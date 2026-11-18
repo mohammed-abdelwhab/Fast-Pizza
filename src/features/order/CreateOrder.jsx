@@ -2,6 +2,7 @@ import { Form, redirect, useActionData, useNavigation } from "react-router-dom";
 import { createOrder } from "../../services/apiRestaurant";
 import { useSelector } from "react-redux";
 import LinkBtn from "../../ui/LinkBtn";
+import EmptyCart from "../cart/EmptyCart";
 
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
@@ -40,16 +41,21 @@ export async function action({ request }) {
 function CreateOrder() {
   // const [withPriority, setWithPriority] = useState(false);
   const user = useSelector((state) => state.user.userName);
-  const cartState = useSelector((state) => state.cart.cart);
   //** ------ Adding a new key to the cart object so the order api method can work --> totalPrice -----*/
-  const cart = cartState.map((item) => ({
-    ...item,
-    totalPrice: item.quantity * item.unitPrice,
-  }));
+  const cart = useSelector((state) =>
+    state.cart.cart.map((item) => ({
+      ...item,
+      totalPrice: item.quantity * item.unitPrice,
+    })),
+  );
+
   const formState = useNavigation();
   const isSubmitting = formState.state === "submitting";
   //! Consuming the errors object returned from the action function
   const formErrors = useActionData();
+
+  //! validation: if the cart is empty show the empty cart page
+  if (!cart.length) return <EmptyCart />;
   return (
     <div className="mx-auto max-w-xl px-6 py-2 sm:py-10">
       <h2 className="font-display text-3xl font-bold text-stone-900">
