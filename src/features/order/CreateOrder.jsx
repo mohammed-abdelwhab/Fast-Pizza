@@ -5,6 +5,8 @@ import LinkBtn from "../../ui/LinkBtn";
 import EmptyCart from "../cart/EmptyCart";
 import store from "../../store";
 import { deleteCart } from "../cart/cartSlice";
+import { useState } from "react";
+import { formatCurrency } from "../../utils/helpers";
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
@@ -22,7 +24,7 @@ export async function action({ request }) {
   order = {
     ...data,
     cart: JSON.parse(data.cart),
-    priority: data.priority === "on",
+    priority: data.priority === "true",
   };
 
   //? 2- Adding some form validation "on phone number" before creating a new order (early return):
@@ -46,16 +48,24 @@ export async function action({ request }) {
 }
 
 function CreateOrder() {
-  // const [withPriority, setWithPriority] = useState(false);
+  const [withPriority, setWithPriority] = useState(false);
   const user = useSelector((state) => state.user.userName);
-  //** ------ Adding a new key to the cart object so the order api method can work --> totalPrice -----*/
+  /** Bug Fix:
+   *   Adding a new key to the cart object so the order api method can work --> totalPrice "for each object not the overall total"  
+   * */
   const cart = useSelector((state) =>
     state.cart.cart.map((item) => ({
       ...item,
       totalPrice: item.quantity * item.unitPrice,
     })),
   );
-
+  //**Feat: show the new total if the user wants priority */
+  // total with priority fee = cart total price * 0.2
+  const totalWithPriorityFee =
+    cart.reduce((acc, curr) => {
+      acc = acc + curr.unitPrice * curr.quantity;
+      return acc;
+    }, 0) * 0.2;
   const formState = useNavigation();
   const isSubmitting = formState.state === "submitting";
   //! Consuming the errors object returned from the action function
@@ -130,6 +140,8 @@ function CreateOrder() {
             type="checkbox"
             name="priority"
             id="priority"
+            value={withPriority}
+            onChange={(e) => setWithPriority(e.target.checked)}
           />
           <label
             htmlFor="priority"
@@ -148,6 +160,11 @@ function CreateOrder() {
           >
             {isSubmitting ? "Creating order..." : "Order now"}
           </button>
+          {withPriority && (
+            <span className="font-body text-xs text-stone-950">
+              Extra Fees: {formatCurrency(totalWithPriorityFee)}
+            </span>
+          )}
           <LinkBtn to={"cart"}>&larr; Back to cart</LinkBtn>
         </div>
       </Form>

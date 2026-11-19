@@ -43,7 +43,7 @@ function Order() {
               Priority
             </span>
           )}
-          <span className="font-display text-xl font-bold text-stone-900">
+          <span className="ml-2 rounded-full border-stone-200 bg-basil-500 px-3 py-1 font-display text-lg font-bold text-stone-200">
             {status} order
           </span>
         </div>
