@@ -38,7 +38,7 @@ function Cart() {
       {/** ----- Cart Item Component ----- */}
       <div className="mt-6 space-y-4">
         {cart.map((item) => (
-          <CartItem key={item.id} item={item} />
+          <CartItem key={item.pizzaId} item={item} />
         ))}
       </div>
 

@@ -9,6 +9,7 @@ import AppLayout from "./ui/AppLayout";
 import { loader as menuLoader } from "./features/menu/Menu";
 import { loader as orderLoader } from "./features/order/Order";
 import { action as formAction } from "./features/order/CreateOrder";
+import { action as updateAction } from "./features/order/UpdateOrder";
 //TODO 1) A new way of creating routes --> createBrowserRouter() takes array of objects
 //TODO 2) Each object descripes a route and it's child routes
 //TODO 3) For each route that fetchs some data, it has it's own loader to apply the "fetch as you render" concept
@@ -41,6 +42,7 @@ const routes = createBrowserRouter([
         path: "/order/:orderId",
         element: <Order />,
         loader: orderLoader,
+        action: updateAction,
       },
     ],
   },

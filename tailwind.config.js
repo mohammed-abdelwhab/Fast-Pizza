@@ -26,6 +26,7 @@ export default {
         "float-pizza": "float 4s ease-in-out infinite",
         bump: "bump 0.35s ease-out",
         "slide-up": "slide-up 0.3s ease-out",
+        "slide-down": "slide-down 0.25s ease-in forwards",
       },
       keyframes: {
         float: {
@@ -39,6 +40,10 @@ export default {
         "slide-up": {
           from: { transform: "translateY(100%)" },
           to: { transform: "translateY(0)" },
+        },
+        "slide-down": {
+          from: { transform: "translateY(0)" },
+          to: { transform: "translateY(100%)" },
         },
       },
     },

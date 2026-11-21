@@ -8,10 +8,10 @@ function MenuItem({ pizza }) {
   const dispatch = useDispatch();
 
   const isInCart = useSelector((state) =>
-    state.cart.cart.some((item) => item.id === id),
+    state.cart.cart.some((item) => item.pizzaId === id),
   );
   function handleAddToCart() {
-    dispatch(addItem({ id, name, unitPrice, quantity: 1 }));
+    dispatch(addItem({ pizzaId: id, name, unitPrice, quantity: 1 }));
   }
   return (
     <li className="group flex flex-col overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm transition-shadow hover:shadow-md">
