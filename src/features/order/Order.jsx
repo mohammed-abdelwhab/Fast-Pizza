@@ -9,6 +9,7 @@ import {
 import { getOrder } from "../../services/apiRestaurant";
 import LinkBtn from "../../ui/LinkBtn";
 import OrderItem from "./OrderItem";
+import UpdateOrder from "./UpdateOrder";
 
 // Here the id sent as a param in the input search is received here with the loader function
 export async function loader({ params }) {
@@ -43,9 +44,10 @@ function Order() {
               Priority
             </span>
           )}
-          <span className="ml-2 rounded-full border-stone-200 bg-basil-500 px-3 py-1 font-display text-lg font-bold text-stone-200">
+          <span className="ml-2 rounded-full border-stone-200 bg-basil-500 px-3 py-1.5 font-display text-xs font-bold text-stone-200">
             {status} order
           </span>
+          {!priority && <UpdateOrder />}
         </div>
       </div>
 
