@@ -1,21 +1,23 @@
 import LinkBtn from "../../ui/LinkBtn";
 import CartItem from "./CartItem";
+import EmptyCart from "./EmptyCart";
+import ConfirmModal from "../../ui/ConfirmModal";
 import { formatCurrency } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCart } from "./cartSlice";
-import ConfirmModal from "../../ui/confirmModal";
 import { useState } from "react";
-import EmptyCart from "./EmptyCart";
 
 function Cart() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const cart = useSelector((state) => state.cart.cart);
-  const total = cart.reduce(
-    (acc, curr) => acc + curr.unitPrice * curr.quantity,
-    0,
+  const total = useSelector((state) =>
+    state.cart.cart.reduce(
+      (acc, curr) => acc + curr.unitPrice * curr.quantity,
+      0,
+    ),
   );
 
   function handleConfirm() {

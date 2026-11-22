@@ -2,7 +2,7 @@ import { useState } from "react";
 import { formatCurrency } from "../../utils/helpers";
 import { incQuantity, decQuantity, removeItem } from "./cartSlice";
 import { useDispatch } from "react-redux";
-import ConfirmModal from "../../ui/confirmModal";
+import ConfirmModal from "../../ui/ConfirmModal";
 import pizzaHero from "../../assets/pizza.png";
 
 function CartItem({ item }) {

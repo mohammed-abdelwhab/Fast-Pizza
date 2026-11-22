@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
-
-export default function ConfirmModal({
+import { useEffect } from "react";
+function ConfirmModal({
   isOpen,
   onClose,
   onConfirm,
@@ -27,7 +26,6 @@ export default function ConfirmModal({
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
-
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm transition-opacity"
@@ -101,3 +99,5 @@ export default function ConfirmModal({
     </div>
   );
 }
+
+export default ConfirmModal;
